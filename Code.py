@@ -3,38 +3,36 @@ import shutil
 import ctypes
 import winshell
 
-# Función para eliminar archivos y carpetas
 
-
-def eliminar_archivos(carpeta):
-    for archivo in os.listdir(carpeta):
-        ruta_archivo = os.path.join(carpeta, archivo)
+def delete_files(folder):
+    for file in os.listdir(folder):
+        file_path = os.path.join(folder, file)
         try:
-            if os.path.isfile(ruta_archivo) or os.path.islink(ruta_archivo):
-                os.unlink(ruta_archivo)
-            elif os.path.isdir(ruta_archivo):
-                shutil.rmtree(ruta_archivo)
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
         except Exception as e:
-            print(f'Error al eliminar {ruta_archivo}. Razón: {e}')
+            print(f'Error deleting {file_path}. Reason: {e}')
 
 
-# 1. Eliminar archivos temporales
+# 1. Delete temporary files
 temp_path = os.getenv('TEMP')
-eliminar_archivos(temp_path)
+delete_files(temp_path)
 
-# 2. Eliminar archivos de la carpeta de descargas
+# 2. Delete files from the download folder
 downloads_path = os.path.join(os.path.expanduser('~'), 'Downloads')
-eliminar_archivos(downloads_path)
+delete_files(downloads_path)
 
-# 3. Eliminar archivos de la papelera de reciclaje
+# 3. Delete files from the recycle bin
 
 
-def vaciar_papelera():
-    # Vaciar la papelera de reciclaje
+def empty_recycle_bin():
+    # Empty the recycle bin
     winshell.recycle_bin().empty(confirm=False, show_progress=False, sound=False)
 
-    print("La papelera de reciclaje ha sido vaciada.")
+    print("The recycle bin has been emptied.")
 
 
 if __name__ == "__main__":
-    vaciar_papelera()
+    empty_recycle_bin()
